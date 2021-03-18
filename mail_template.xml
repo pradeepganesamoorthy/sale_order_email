@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="sale_email_template" model="mail.template">
+            <field name="name">Sale Config Invoice</field>
+            <field name="email_from">${object.user_id.email|safe}</field>
+            <field name="subject">${object.partner_id.name} Invoice (Ref ${object.name})</field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="report_template" ref="sale_order_view.report_sale_order_test"/>
+            <field name="report_name">Invoice_${(object.name)}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px">
+                        Dear ${object.partner_id.name}
+                        <br/><br/>
+                        Here is your invoice ${object.name}
+                        <br/><br/>
+                        Confirmation date : ${object.date_order}
+                        <br/><br/>
+                        Payment Terms : ${object.payment_term_id.name}
+                        <br/><br/>
+                        Thank you
+                        <br/><br/>
+                        ${object.user_id.name}
+                    </p>
+                </div>
+            </field>
+        </record>
+
+        <record id="sale_order_email_compose_message_wizard" model="ir.actions.act_window">
+            <field name="name">Compose Email</field>
+            <field name="res_model">mail.compose.message</field>
+            <field name="src_model">mail.compose.message</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
